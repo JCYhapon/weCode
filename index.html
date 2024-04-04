@@ -299,6 +299,63 @@
             </div>
           </div>
         </div>
+        <!-- FEEDBACK MADE BY GIEWEN PINLAC -->
+        <div style="margin-top: 40px">
+          <h2>Customer Feedback</h2>
+        </div>
+        <div style="overflow-x: auto; height: 400px; width: 100%">
+          <div
+            id="data"
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              grid-gap: 25px;
+              margin-top: 30px;
+            "
+          ></div>
+        </div>
+
+        <script>
+          let isExpanded = false;
+
+          const showAll = () => {
+            const dataDiv = document.getElementById("data");
+            if (!isExpanded) {
+              dataDiv.style.gridTemplateRows = "auto";
+              isExpanded = true;
+            } else {
+              dataDiv.style.gridTemplateRows = "none";
+              isExpanded = false;
+            }
+          };
+
+          fetch(
+            "https://script.google.com/macros/s/AKfycbwNqrweEe8oKwBFWIkO-fxliyAgqDjUhmA0hdRtgX8CnoXGVAD1lgAQyZhXpEfdSLT8Ag/exec"
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              const dataDiv = document.getElementById("data");
+              data.data.forEach((comment) => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                const utcTime = new Date(comment.Time);
+                const philippineTime = new Date(
+                  utcTime.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+                );
+
+                card.innerHTML = `
+  <div style="padding: 10px;">
+    <h2>${comment.Name}</h2>
+    <p>${philippineTime.toLocaleString()}</p>
+    <p>"${comment.Comment}"</p>
+  </div>
+`;
+                dataDiv.appendChild(card);
+              });
+            })
+            .catch((error) => console.error("Error fetching data:", error));
+        </script>
       </div>
     </section>
     <!-- About-->
